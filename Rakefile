@@ -13,7 +13,7 @@ end
 
 desc "Update Gemfile.lock"
 task :gem do
-  sh %Q|docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app ruby:#{CONTAINER_RUBY_VERSION} bundle install|
+  sh %Q|docker run --rm -v "#{Dir.pwd}":/usr/src/app -w /usr/src/app ruby:#{CONTAINER_RUBY_VERSION} bundle install|
   build_command
 end
 
@@ -39,8 +39,7 @@ def build_command
 end
 
 def run_command(command)
-  # Use Ruby's pwd
-  sh %Q|docker run -itP --rm -v "$PWD":/usr/src/app -w /usr/src/app sinatra-dev #{command}|
+  sh %Q|docker run -itP --rm -v "#{Dir.pwd}":/usr/src/app -w /usr/src/app sinatra-dev #{command}|
 end
 
 def image_exist?(name)
