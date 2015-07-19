@@ -1,3 +1,5 @@
+CONTAINER_RUBY_VERSION = '2.2.2' # Keep the same value as the Dockerfile
+
 task :default => :run
 
 desc "Run sinatra app"
@@ -7,6 +9,12 @@ task :run do
 
   # Run sinatra app
   run_command 'ruby app.rb -o 0.0.0.0'
+end
+
+desc "Update Gemfile.lock"
+task :gem do
+  sh %Q|docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app ruby:#{CONTAINER_RUBY_VERSION} bundle install|
+  build_command
 end
 
 desc "Run shell"
