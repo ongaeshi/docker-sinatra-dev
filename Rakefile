@@ -1,23 +1,40 @@
 task :default => :run
 
-task :build do
-  sh %Q|docker build -t sinatra-dev .|
-end
-
-task :clean do
-  sh %Q|docker rm sinatra-dev|
-end
-
+desc "Run sinatra app"
 task :run do
   # Build if it don't exist container
+  build_command unless image_exist?('sinatra-dev')
+
+  # Run sinatra app
   run_command 'ruby app.rb -o 0.0.0.0'
 end
 
+desc "Run shell"
 task :shell do
   run_command '/bin/bash'
+end
+
+desc "Build image"
+task :build do
+  build_command
+end
+
+desc "Remove image"
+task :clean do
+  sh %Q|docker rmi sinatra-dev|
+end
+
+# ---
+
+def build_command
+  sh %Q|docker build -t sinatra-dev .|
 end
 
 def run_command(command)
   # Use Ruby's pwd
   sh %Q|docker run -itP --rm -v "$PWD":/usr/src/app -w /usr/src/app sinatra-dev #{command}|
+end
+
+def image_exist?(name)
+  `docker images -q #{name}` != ""
 end
