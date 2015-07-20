@@ -31,7 +31,7 @@ end
 
 desc "Remove image"
 task :clean do
-  sh %Q|docker rmi #{NAME}|
+  sh %Q|docker rmi #{NAME}| if image_exist?(NAME)
 end
 
 # ---
