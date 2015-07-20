@@ -41,7 +41,7 @@ def build_command
 end
 
 def run_command(command)
-  sh %Q|docker run -itP --rm -v "#{Dir.pwd}":/usr/src/app -w /usr/src/app #{NAME} #{command}|
+  sh %Q|docker run -itP --rm -v "#{Dir.pwd}":/usr/src/app -w /usr/src/app --name #{NAME} #{NAME} #{command}|
 end
 
 def image_exist?(name)
