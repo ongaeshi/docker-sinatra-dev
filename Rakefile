@@ -20,6 +20,7 @@ end
 
 desc "Run shell"
 task :shell do
+  build_command unless image_exist?(NAME)
   run_command '/bin/bash'
 end
 
